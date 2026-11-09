@@ -1,0 +1,67 @@
+# Option B counters (docs/plan.md §6): ESTIMATES computed locally from public
+# annual figures. These are NOT worldometers data and are labelled "Estimated"
+# in the UI. Copy this file to the config directory as `counters.toml` to
+# override it.
+#
+# value(t) = base + per_year / 31,557,600 × (t − epoch)
+#   reset = "never"  → epoch required
+#   reset = "daily"  → counts from local midnight (base usually 0)
+#   reset = "yearly" → counts from local January 1 (base usually 0)
+
+[[counter]]
+key = "world_population"
+label = "Current world population"
+category = "population"
+base = 8_300_678_396                 # 1 July 2026, UN WPP 2024 medium variant
+epoch = "2026-07-01T00:00:00Z"
+per_year = 69_000_000                # births − deaths
+reset = "never"
+source = "UN World Population Prospects 2024 (medium variant)"
+
+[[counter]]
+key = "births_this_year"
+label = "Births this year"
+category = "population"
+per_year = 132_000_000
+reset = "yearly"
+source = "UN World Population Prospects 2024 (approx. annual births)"
+
+[[counter]]
+key = "births_today"
+label = "Births today"
+category = "population"
+per_year = 132_000_000
+reset = "daily"
+source = "UN World Population Prospects 2024 (approx. annual births)"
+
+[[counter]]
+key = "deaths_this_year"
+label = "Deaths this year"
+category = "population"
+per_year = 63_000_000
+reset = "yearly"
+source = "UN World Population Prospects 2024 (approx. annual deaths)"
+
+[[counter]]
+key = "deaths_today"
+label = "Deaths today"
+category = "population"
+per_year = 63_000_000
+reset = "daily"
+source = "UN World Population Prospects 2024 (approx. annual deaths)"
+
+[[counter]]
+key = "growth_this_year"
+label = "Population growth this year"
+category = "population"
+per_year = 69_000_000
+reset = "yearly"
+source = "UN World Population Prospects 2024 (births − deaths)"
+
+[[counter]]
+key = "growth_today"
+label = "Population growth today"
+category = "population"
+per_year = 69_000_000
+reset = "daily"
+source = "UN World Population Prospects 2024 (births − deaths)"
