@@ -16,15 +16,15 @@ use crate::ui::Theme;
 #[serde(rename_all = "lowercase")]
 pub enum Tab {
     #[default]
-    Countries,
     Live,
+    Countries,
     Gdp,
     Co2,
     Area,
 }
 
 impl Tab {
-    pub const ALL: [Tab; 5] = [Tab::Countries, Tab::Live, Tab::Gdp, Tab::Co2, Tab::Area];
+    pub const ALL: [Tab; 5] = [Tab::Live, Tab::Countries, Tab::Gdp, Tab::Co2, Tab::Area];
 
     pub fn title(self) -> &'static str {
         match self.table_kind() {
@@ -506,7 +506,7 @@ mod tests {
     fn switching_to_live_loads_counters_lazily() {
         let mut app = app();
         app.take_requests();
-        app.on_key(key(KeyCode::Char('2')));
+        app.on_key(key(KeyCode::Char('1')));
         assert_eq!(app.tab, Tab::Live);
         assert_eq!(app.take_requests()[0].key, PageKey::Counters);
     }

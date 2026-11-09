@@ -5,7 +5,7 @@ A fast, keyboard-driven terminal UI for browsing statistics published on
 [`ratatui`](https://ratatui.rs).
 
 ```
- worldo-tui   [1] Countries   [2] Live   [3] GDP   [4] CO₂   [5] Area
+ worldo-tui   [1] Live   [2] Countries   [3] GDP   [4] CO₂   [5] Area
    # ▲ Country                    Population   Yearly %   Net change   Density   Med. age   Fert.   World %   Urban %
 ›    1 India                   1,476,625,576    +0.87 %   12,760,051       497       29.2    1.93   17.80 %   36.00 %
      2 China                   1,412,914,089    −0.22 %   −3,182,005       151       40.6    1.03   17.00 %   66.80 %
@@ -75,7 +75,7 @@ Optional `config.toml` in the platform config directory
 
 ```toml
 cache_ttl_hours = 12       # minimum 6
-default_tab = "countries"  # countries | live | gdp | co2 | area
+default_tab = "live"       # live | countries | gdp | co2 | area
 theme = "default"          # default | mono
 ```
 

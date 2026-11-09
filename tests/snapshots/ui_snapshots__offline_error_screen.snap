@@ -2,7 +2,7 @@
 source: tests/ui_snapshots.rs
 expression: render(&mut app)
 ---
-" worldo-tui   [1] Countries   [2] Live   [3] GDP   [4] CO₂   [5] Area                                                   "
+" worldo-tui   [1] Live   [2] Countries   [3] GDP   [4] CO₂   [5] Area                                                   "
 "                                                                                                                        "
 "  Could not load GDP                                                                                                    "
 "                                                                                                                        "

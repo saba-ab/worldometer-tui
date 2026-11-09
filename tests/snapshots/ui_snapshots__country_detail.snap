@@ -2,7 +2,7 @@
 source: tests/ui_snapshots.rs
 expression: render(&mut app)
 ---
-" worldo-tui   [1] Countries   [2] Live   [3] GDP   [4] CO₂   [5] Area                                                   "
+" worldo-tui   [1] Live   [2] Countries   [3] GDP   [4] CO₂   [5] Area                                                   "
 " Georgia  ·  Population 3,804,642  ·  Rank #131  ·  0.05 % of world                                                     "
 " History 1955–2026 · forecast* to 2050 · source: worldometers.info (UN World Population Prospects)                      "
 "┌ Population over time ────────────────────────────────────────────────────────────────────────────────────────────────┐"

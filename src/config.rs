@@ -2,7 +2,7 @@
 //!
 //! ```toml
 //! cache_ttl_hours = 12      # minimum 6 (constraint C3)
-//! default_tab = "countries" # countries | live | gdp | co2 | area
+//! default_tab = "live"      # live | countries | gdp | co2 | area
 //! theme = "default"         # default | mono
 //! ```
 
@@ -41,7 +41,7 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             cache_ttl_hours: DEFAULT_TTL_HOURS,
-            default_tab: Tab::Countries,
+            default_tab: Tab::Live,
             theme: ThemeName::Default,
         }
     }
@@ -116,11 +116,11 @@ mod tests {
     #[test]
     fn values_are_read_and_ttl_is_clamped() {
         let cfg = Config::parse(
-            "cache_ttl_hours = 1\ndefault_tab = \"live\"\ntheme = \"mono\"",
+            "cache_ttl_hours = 1\ndefault_tab = \"countries\"\ntheme = \"mono\"",
             Path::new("x"),
         )
         .unwrap();
-        assert_eq!(cfg.default_tab, Tab::Live);
+        assert_eq!(cfg.default_tab, Tab::Countries);
         assert_eq!(cfg.theme, ThemeName::Mono);
         assert_eq!(cfg.ttl(), TimeDelta::hours(6));
     }

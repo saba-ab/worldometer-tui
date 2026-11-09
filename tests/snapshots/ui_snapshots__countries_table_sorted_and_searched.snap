@@ -2,7 +2,7 @@
 source: tests/ui_snapshots.rs
 expression: render(&mut app)
 ---
-" worldo-tui   [1] Countries   [2] Live   [3] GDP   [4] CO₂   [5] Area                                                   "
+" worldo-tui   [1] Live   [2] Countries   [3] GDP   [4] CO₂   [5] Area                                                   "
 " Search: an   74 of 237 rows                                                                                            "
 "     # Country ▲                  Population   Yearly %   Net change   Density   Med. age   Fert.   World %   Urban %   "
 "›   36 Afghanistan                45,047,068    +2.74 %    1,202,956        69       17.4    4.56    0.54 %   26.20 %   "
