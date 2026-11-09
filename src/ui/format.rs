@@ -1,4 +1,4 @@
-//! Number formatting: `1,234,567`, `+0.91 %`, `$1.23 T`, `+4.2/s`, `2h`.
+//! Number formatting: `1,234,567`, `+0.91 %`, `$1.23 T`, `2h`.
 
 /// U+2212 MINUS SIGN, as used by the site.
 pub const MINUS: char = '\u{2212}';
@@ -100,21 +100,6 @@ pub fn compact(value: f64) -> String {
     int(value)
 }
 
-/// A counter's rate in the most readable unit: `+4.2/s`, `+12/min`, `−1/day`.
-pub fn rate(per_sec: f64) -> String {
-    const UNITS: [(f64, &str); 4] = [(1.0, "s"), (60.0, "min"), (3600.0, "h"), (86400.0, "day")];
-    let (scale, unit) = UNITS
-        .iter()
-        .copied()
-        .find(|(scale, _)| (per_sec * scale).abs() >= 0.95)
-        .unwrap_or(UNITS[UNITS.len() - 1]);
-    let value = per_sec * scale;
-    let decimals = if value.abs() >= 100.0 { 0 } else { 1 };
-    let body = float(value.abs(), decimals);
-    let sign = if value < 0.0 { MINUS } else { '+' };
-    format!("{sign}{body}/{unit}")
-}
-
 /// Compact age: `just now`, `5m`, `2h`, `3d`.
 pub fn age(seconds: i64) -> String {
     match seconds.max(0) {
@@ -155,14 +140,6 @@ mod tests {
         assert_eq!(usd_compact(32_642_373_000_000.0), "$32.64 T");
         assert_eq!(usd_compact(1_230_000_000.0), "$1.23 B");
         assert_eq!(usd_compact(45_000.0), "$45,000");
-    }
-
-    #[test]
-    fn rates_pick_a_readable_unit() {
-        assert_eq!(rate(4.18), "+4.2/s");
-        assert_eq!(rate(0.5), "+30.0/min");
-        assert_eq!(rate(-1.0 / 86_400.0), "−1.0/day");
-        assert_eq!(rate(3600.0), "+3,600/s");
     }
 
     #[test]

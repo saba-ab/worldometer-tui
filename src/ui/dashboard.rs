@@ -4,14 +4,14 @@
 use std::time::SystemTime;
 
 use ratatui::Frame;
-use ratatui::layout::{Alignment, Constraint, Layout, Rect};
+use ratatui::layout::{Constraint, Layout, Rect};
 use ratatui::style::Modifier;
 use ratatui::text::{Line, Span};
 use ratatui::widgets::{Block, Paragraph};
 
 use super::{Theme, format};
 use crate::app::App;
-use crate::counters::{Category, Counter, Source, energy_counters};
+use crate::counters::{Category, Counter, energy_counters};
 
 const CARD_HEIGHT: u16 = 3;
 
@@ -27,8 +27,7 @@ fn columns_for(width: u16) -> u16 {
 enum Section<'a> {
     Cards {
         title: String,
-        note: String,
-        estimated: bool,
+        note: Option<String>,
         counters: Vec<&'a Counter>,
     },
     Message {
@@ -41,9 +40,9 @@ enum Section<'a> {
 impl Section<'_> {
     fn height(&self, columns: u16) -> u16 {
         match self {
-            Section::Cards { counters, .. } => {
+            Section::Cards { note, counters, .. } => {
                 let rows = (counters.len() as u16).div_ceil(columns);
-                2 + rows * CARD_HEIGHT
+                1 + u16::from(note.is_some()) + rows * CARD_HEIGHT
             }
             Section::Message { .. } => 2,
         }
@@ -68,24 +67,15 @@ pub fn draw(frame: &mut Frame, area: Rect, app: &App, now: SystemTime) {
             for category in categories {
                 let group: Vec<&Counter> =
                     counters.iter().filter(|c| c.category == category).collect();
-                let sources: Vec<&str> = group
-                    .iter()
-                    .filter_map(|c| match &c.source {
-                        Source::Estimated(s) => Some(s.as_str()),
-                        Source::Worldometers => None,
-                    })
-                    .collect();
-                let source = sources.first().copied().unwrap_or("public annual figures");
                 sections.push(Section::Cards {
-                    title: format!("{} — ESTIMATED", category.label()),
-                    note: format!("Computed locally from {source}. Not worldometers data."),
-                    estimated: true,
+                    title: category.label().to_string(),
+                    note: None,
                     counters: group,
                 });
             }
         }
         Err(error) => sections.push(Section::Message {
-            title: "Estimated counters".into(),
+            title: "Population counters".into(),
             text: format!("unavailable: {error}"),
             warn: true,
         }),
@@ -94,9 +84,10 @@ pub fn draw(frame: &mut Frame, area: Rect, app: &App, now: SystemTime) {
     if !energy.is_empty() {
         sections.push(Section::Cards {
             title: "Energy — worldometers.info".into(),
-            note: "Constants from worldometers' live-counter script; values computed locally each second."
-                .into(),
-            estimated: false,
+            note: Some(
+                "Constants from worldometers' live-counter script; values computed locally each second."
+                    .into(),
+            ),
             counters: energy.iter().collect(),
         });
     } else if let Some(error) = &app.energy.error {
@@ -154,25 +145,21 @@ fn draw_section(
         Section::Cards {
             title,
             note,
-            estimated,
             counters,
         } => {
             let [title_area, note_area, grid] = Layout::vertical([
                 Constraint::Length(1),
-                Constraint::Length(1),
+                Constraint::Length(u16::from(note.is_some())),
                 Constraint::Min(0),
             ])
             .areas(area);
-            let badge_style = if *estimated {
-                theme.fg(theme.warn).add_modifier(Modifier::BOLD)
-            } else {
-                title_style
-            };
-            frame.render_widget(Line::styled(format!(" {title}"), badge_style), title_area);
-            frame.render_widget(
-                Line::styled(format!(" {note}"), theme.fg(theme.muted)),
-                note_area,
-            );
+            frame.render_widget(Line::styled(format!(" {title}"), title_style), title_area);
+            if let Some(note) = note {
+                frame.render_widget(
+                    Line::styled(format!(" {note}"), theme.fg(theme.muted)),
+                    note_area,
+                );
+            }
 
             let card_width = grid.width / columns;
             for (i, counter) in counters.iter().enumerate() {
@@ -212,12 +199,4 @@ fn draw_card(
         value_spans.push(Span::styled(format!(" {unit}"), theme.fg(theme.muted)));
     }
     frame.render_widget(Line::from(value_spans), inner);
-    frame.render_widget(
-        Paragraph::new(Span::styled(
-            format!("{} ", format::rate(counter.rate_per_sec)),
-            theme.fg(theme.muted),
-        ))
-        .alignment(Alignment::Right),
-        inner,
-    );
 }

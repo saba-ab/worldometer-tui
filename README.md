@@ -23,7 +23,7 @@ at 120×30.
   a detail view for each country (history since 1955, forecast to 2050, chart).
 - **Live**: counters that tick every second with no network traffic.
   - *Population* counters are **estimates** computed locally from UN World
-    Population Prospects 2024 annual figures, and are labelled as such.
+    Population Prospects 2024 annual figures.
     Worldometers' own population counters come from an obfuscated script whose
     licence forbids reuse, so we don't use it.
   - *Energy* counters use the constants from worldometers' readable
