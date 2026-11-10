@@ -4,16 +4,15 @@ A fast, keyboard-driven terminal UI for browsing statistics published on
 [worldometers.info](https://www.worldometers.info), written in Rust with
 [`ratatui`](https://ratatui.rs).
 
-```
- worldo-tui   [1] Live   [2] Countries   [3] GDP   [4] CO₂   [5] Area
-   # ▲ Country                    Population   Yearly %   Net change   Density   Med. age   Fert.   World %   Urban %
-›    1 India                   1,476,625,576    +0.87 %   12,760,051       497       29.2    1.93   17.80 %   36.00 %
-     2 China                   1,412,914,089    −0.22 %   −3,182,005       151       40.6    1.03   17.00 %   66.80 %
-     3 United States             349,035,494    +0.51 %    1,759,686        38       38.7    1.62    4.20 %   80.30 %
- / search  h/l sort col  s asc/desc  Enter detail  r refresh  ? help  q quit                              Updated 2h ago
-```
+**Live** — counters that tick every second:
 
-More screens (country detail with chart, live counters, help) are in
+![Live tab: population and energy counters](docs/screenshots/live.png)
+
+**Countries** — sortable, searchable population table:
+
+![Countries tab: population by country](docs/screenshots/countries.png)
+
+More screens (country detail with chart, help) are in
 [`tests/snapshots/`](tests/snapshots/). They are the exact text the UI renders
 at 120×30.
 
